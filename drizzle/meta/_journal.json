@@ -15,6 +15,27 @@
       "when": 1764539792910,
       "tag": "0001_strong_winter_soldier",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1764695587933,
+      "tag": "0002_fearless_wallop",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1764696297814,
+      "tag": "0003_wet_ronan",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1764697393440,
+      "tag": "0004_past_venus",
+      "breakpoints": true
     }
   ]
 }

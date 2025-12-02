@@ -1,4 +1,5 @@
 import * as pg from "drizzle-orm/pg-core";
+export * from "./auth-schema";
 
 export const users = pg.pgTable("users", {
   id: pg

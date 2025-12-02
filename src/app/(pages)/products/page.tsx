@@ -50,6 +50,7 @@ export default function Product() {
       });
     },
   });
+
   return (
     <div className="flex flex-row gap-4 p-4">
       <div className="flex flex-col gap-2 p-4 rounded-2xl border">
