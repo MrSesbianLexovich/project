@@ -109,12 +109,9 @@ function CreateProduct() {
 }
 
 interface ProductProps {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-  };
+  product: NonNullable<
+    Awaited<ReturnType<typeof api.products.get>>["data"]
+  >[number];
 }
 
 export function EditProduct({ product }: ProductProps) {

@@ -49,7 +49,8 @@ function CreateUser() {
       setEmail("");
       setDob("");
     },
-    onError: () => {
+    onError: (e) => {
+      alert(e.message);
       alert("не удалось создать пользователя");
     },
   });

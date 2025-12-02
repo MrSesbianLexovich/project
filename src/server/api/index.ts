@@ -3,6 +3,7 @@ import Elysia from "elysia";
 import z from "zod/v4";
 import { db } from "../lib/db";
 import { products, users } from "../lib/db/schema/schema";
+import { auth } from "../lib/auth";
 
 export const userSchema = z.object({
   name: z
@@ -22,16 +23,57 @@ export const productSchema = z.object({
   imageUrl: z.string({ message: "Введите Url" }),
 });
 
+export const userService = new Elysia({
+  name: "user-service",
+})
+  .derive({ as: "global" }, async ({ request: { headers } }) => {
+    const session = await auth.api.getSession({ headers });
+    return {
+      session,
+    };
+  })
+  .macro({
+    auth: {
+      async resolve({ status, session }) {
+        if (!session) return status(401);
+
+        return {
+          session: session!,
+        };
+      },
+    },
+    admin: {
+      async resolve({ status, session }) {
+        if (session?.user.role !== "admin") {
+          return status(401);
+        }
+        return {
+          session: session!,
+        };
+      },
+    },
+  });
+
 export const app = new Elysia({
   prefix: "/api",
 })
+  .mount(auth.handler)
+  .use(userService)
 
-  .get("/users", async () => {
-    const res = await db.query.users.findMany({
-      orderBy: (users, { desc }) => [desc(users.dob)],
-    });
-    return res;
-  })
+  .get("/me", ({ session }) => session)
+
+  .get(
+    "/users",
+    async () => {
+      const res = await db.query.users.findMany({
+        orderBy: (users, { desc }) => [desc(users.dob)],
+      });
+      return res;
+    },
+    {
+      admin: true,
+    },
+  )
   .post(
     "/users",
     async ({ body }) => {

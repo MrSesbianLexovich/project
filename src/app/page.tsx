@@ -1,6 +1,23 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { api } from "./utils/api";
 
 export default function Home() {
+  const { data: session } = useQuery({
+    queryKey: ["session"],
+    queryFn: async () => {
+      const res = await api.me.get();
+      if (res.error) {
+        throw new Error(String(res.error.status));
+      }
+      return res.data;
+    },
+  });
+
+  return JSON.stringify({ session });
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <div className="w-fit flex flex-row p-4 gap-4 border rounded-2xl">
